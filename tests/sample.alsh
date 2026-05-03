@@ -1,0 +1,167 @@
+#!/usr/local/bin/alsh
+
+@define API_URL https://api.example.com
+@include "utils.alsh"
+@include "Ctest.alsh"
+
+@main
+function start() { // notice how its not called main? well its the main function anyway
+
+    echo "Starting ALSH demo..."
+
+    let name = "ArchUser"
+    let greeting = "$name, welcome to ALSH"
+
+    echo "$greeting"
+
+    let x = (3 + 4)
+    let y = ($x * 2)
+
+    echo "x=$x"
+    echo "y=$y"
+
+    c::puts("Hello from C world")
+
+    let kernel = { uname -r }
+    echo "kernel=$kernel"
+
+    # --- scope demonstration ---
+    let outer = "outside"
+
+    let scoped = {
+        echo "inside block, outer=$outer"
+
+        let inner = "inside"
+
+        echo "inner=$inner"
+    }
+
+    # --- shadowing ---
+    let value = 10
+
+    let shadow_test = {
+        let value = 20
+        echo "inner value=$value"
+    }
+
+    echo "outer value=$value"
+
+    # --- loops ---
+    let counter = 0
+    loop {
+        echo "loop iteration $counter"
+        let counter = ($counter + 1)
+
+        if ($counter == 3) {
+            break
+        }
+    }
+
+    loop count 3 {
+        echo "count loop iteration"
+    }
+
+    let ticks = 0
+    loop interval 1 {
+        echo "tick $ticks"
+        let ticks = ($ticks + 1)
+
+        if ($ticks == 2) {
+            break
+        }
+    }
+
+    let i = 0
+    while ($i < 5) {
+        echo "while iteration $i"
+        let i = ($i + 1)
+
+        if ($i == 3) {
+            break
+        }
+    }
+
+    # --- arrays ---
+    let arr = [1, 2, 3]
+
+    foreach item in arr {
+        echo "item=$item"
+    }
+
+    foreach word in ["one", "two", "three"] {
+        echo "word=$word"
+    }
+
+    # --- C-style loop ---
+    for (let j = 0, $j < 3, let j = ($j + 1)) {
+        echo "j=$j"
+    }
+
+    # --- function usage ---
+    let sum = add(5, 7)
+    echo "sum=$sum"
+
+    # --- block return + scope ---
+    let summary = {
+        if ($x > $y) {
+            let msg = "x bigger"
+            echo $msg
+        } else {
+            let msg = "y bigger"
+            echo $msg
+        }
+
+        # echo $msg   # ❌ not guaranteed (different branches)
+    }
+
+    echo "summary=$summary"
+
+    # --- try/catch ---
+    try {
+        let data = { curl -s API_URL }
+        echo "data=$data"
+    } catch {
+        echo "Failed to fetch data"
+    }
+
+    foreach arg in args {
+        echo "Argument: $arg"
+    }
+
+    get_data(2, API_URL)
+
+    do_some_c_testing()
+
+    return 0
+}
+
+function add(a, b) {
+    let result = ($a + $b)
+    return result
+}
+
+function get_data(interval, url) {
+
+    loop count 3 {
+
+        try {
+            let data = { curl -s $url }
+            let time = { date +"%T" }
+
+            let output = {
+                echo $data
+                echo "fetched at $time"
+            }
+
+            echo $output
+
+        } catch {
+            echo "request failed"
+            break
+        }
+
+        // c::sleep($interval)
+        // no C function "sleep", just run shell style
+        sleep $interval
+    }
+}

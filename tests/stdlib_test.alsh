@@ -1,0 +1,241 @@
+# stdlib_test.alsh
+# tests for std:: / @stdlib functions
+
+@stdlib
+
+function test_print() {
+    echo "--- print / println / eprint ---"
+
+    println("hello from println")
+    print("hello from print, ")
+    println("continued on same line? or not, depends on your impl")
+    eprint("this went to stderr")
+    eprintln("this too, with newline")
+}
+
+function test_input() {
+    echo "--- input ---"
+
+    # uncomment to test interactively
+    # let name = input("what is your name? ")
+    # println("hello, $name")
+
+    println("(input test skipped, interactive)")
+}
+
+function test_env() {
+    echo "--- env ---"
+
+    let home = env("HOME")
+    let shell = env("SHELL")
+    let missing = env("TOTALLY_NOT_SET", "default_value")
+    let missing_no_default = env("ALSO_NOT_SET")
+
+    println("HOME=$home")
+    println("SHELL=$shell")
+    println("missing with default: $missing")
+    println("missing no default: $missing_no_default")   # should be ""
+}
+
+function test_file_io() {
+    echo "--- file io ---"
+
+    let path = "/tmp/alsh_stdlib_test.txt"
+
+    writefile(path, "line one\nline two\nline three\n")
+    println("writefile: done")
+
+    appendfile(path, "line four\n")
+    println("appendfile: done")
+
+    let contents = readfile(path)
+    println("readfile:")
+    println($contents)
+
+    let found = exists(path)
+    println("exists: $found")
+
+    let missing = exists("/tmp/this_file_does_not_exist_alsh")
+    println("exists (missing): $missing")
+
+    # cleanup
+    c::remove(path)
+    println("cleanup: done")
+}
+
+function test_string() {
+    echo "--- string utils ---"
+
+    let s = "  Hello, World!  "
+    let trimmed = trim($s)
+    println("trim: '$trimmed'")
+
+    let up = upper("hello")
+    let lo = lower("WORLD")
+    println("upper: $up")
+    println("lower: $lo")
+
+    let sentence = "the quick brown fox"
+    let has_brown = contains($sentence, "brown")
+    let has_cat = contains($sentence, "cat")
+    println("contains brown: $has_brown")
+    println("contains cat: $has_cat")
+
+    let replaced = replace($sentence, "fox", "dog")
+    println("replace: $replaced")
+
+    let csv = "one,two,three,four"
+    let parts = split($csv, ",")
+    foreach part in parts {
+        println("part: $part")
+    }
+
+    let lines_list = lines("one\ntwo\nthree")
+    foreach line in lines_list {
+        println("line: $line")
+    }
+
+    let starts = startswith("hello", "he")
+    let ends = endswith("hello", "lo")
+    println("startswith: $starts")
+    println("endswith: $ends")
+
+    let padded_left = padleft("42", 5, "0")
+    let padded_right = padright("42", 5, ".")
+    let repeated = repeat("-", 4)
+    let stripped = strip("~~hello~~", "~")
+    println("padleft: $padded_left")
+    println("padright: $padded_right")
+    println("repeat: $repeated")
+    println("strip: $stripped")
+
+    let length = strlen("Hello")
+    println("strlen(Hello): $length")
+
+    let len_string = len("Hello")
+    println("len(Hello): $len_string")
+}
+https://pornox.hu/es/video/5082/19-eves-sulis-csaj-masztizik/
+function test_units() {
+    echo "--- unit formatting ---"
+
+    let gb = format_gb("1000000")
+    println("format_gb(1000000): $gb")
+
+    let gib = format_gib("1048576")
+    println("format_gib(1048576): $gib")
+}
+
+function test_array() {
+    echo "--- array utils ---"
+
+    let arr = split("one,two,three", ",")
+    let len_arr = len($arr)
+    println("len(arr): $len_arr")
+
+    let arr2 = push($arr, "four")
+    println("after push: $arr2")
+
+    let arr3 = pop($arr2)
+    println("after pop: $arr3")
+
+    let first_item = first($arr3)
+    let last_item = last($arr3)
+    println("first: $first_item")
+    println("last: $last_item")
+
+    let slice = slice($arr3, 1, 3)
+    let slice_len = len($slice)
+    println("slice len: $slice_len")
+
+    let reversed = reverse($arr3)
+    let joined = join($reversed, "|")
+    println("reversed join: $joined")
+
+    let contains_two = contains($arr3, "two")
+    println("contains two: $contains_two")
+}
+
+function test_math() {
+    echo "--- math helpers ---"
+
+    let vmin = min(10, 20)
+    let vmax = max(10, 20)
+    let vclamp = clamp(15, 0, 10)
+    let is_even = even(10)
+    let is_odd = odd(11)
+    println("min: $vmin")
+    println("max: $vmax")
+    println("clamp: $vclamp")
+    println("even: $is_even")
+    println("odd: $is_odd")
+}
+
+function test_path_fs() {
+    echo "--- path / filesystem utilities ---"
+
+    let path = "/tmp/alsh_stdlib_path_test.txt"
+    writefile(path, "ok")
+
+    let base = basename(path)
+    let dir = dirname(path)
+    let joined = joinpath("/tmp", "alsh_stdlib_path_test.txt")
+    let is_file = isfile(path)
+    let is_dir = isdir("/tmp")
+    let created = mkdir("/tmp/alsh_stdlib_test_dir")
+    let is_dir2 = isdir("/tmp/alsh_stdlib_test_dir")
+    let tmp_list = listdir("/tmp")
+    let tmp_count = len($tmp_list)
+
+    println("basename: $base")
+    println("dirname: $dir")
+    println("joinpath: $joined")
+    println("isfile: $is_file")
+    println("isdir /tmp: $is_dir")
+    println("mkdir: $created")
+    println("isdir created: $is_dir2")
+    println("listdir(/tmp) count: $tmp_count")
+
+    c::remove(path)
+}
+
+function test_process() {
+    echo "--- process / system utilities ---"
+
+    let which_bash = which("bash")
+    let pid_value = pid()
+    let user = getuser()
+    sleep(1)
+
+    println("which bash: $which_bash")
+    println("pid: $pid_value")
+    println("user: $user")
+    println("sleep: done")
+}
+
+function test_exit() {
+    echo "--- exit ---"
+    println("about to call exit(0)... just kidding")
+    # exit(0)   # commented out, would stop the whole script
+    println("exit: skipped")
+}
+
+@main
+function run_stdlib_tests() {
+    println("=== std:: test suite ===")
+
+    test_print()
+    test_env()
+    test_file_io()
+    test_string()
+    test_units()
+    test_array()
+    test_math()
+    test_path_fs()
+    test_process()
+    test_input()
+    test_exit()
+
+    println("=== done ===")
+    return 0
+}

@@ -1,0 +1,9 @@
+# bail_test.alsh
+# Regression example for _bail
+
+@justrunit
+@stdlib
+
+println("bail test start")
+_bail
+println("ERROR: _bail did not terminate the script")

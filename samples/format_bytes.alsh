@@ -1,0 +1,35 @@
+#!/usr/local/bin/alsh
+
+// format_bytes.alsh
+// Demonstrates stdlib unit conversion helpers for kB -> GB / GiB.
+// Usage: ./samples/format_bytes.alsh "16300420 kB" "1048576 kB" "512000"
+
+@stdlib
+
+function show_memory_conversion() {
+    foreach raw in args {
+        let decimal = format_gb($raw)
+        let binary = format_gib($raw)
+        println("raw: $raw")
+        println("  decimal: $decimal")
+        println("  binary:  $binary")
+        separator()
+    }
+}
+
+function separator() {
+    println("─────────────────────────────────")
+}
+
+@main
+function demo() {
+    println("stdlib formatting demo")
+    separator()
+
+    show_memory_conversion()
+
+    let home = env("HOME")
+    println("your HOME is: $home")
+
+    return 0
+}

@@ -1,0 +1,11 @@
+target
+old
+comparisons
+asd
+*.md
+*.MD
+!README.md
+!ALSHSPEC.md
+!stdlib.md
+vscode-alsh
+.vscode

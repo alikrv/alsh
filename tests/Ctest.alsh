@@ -1,0 +1,11 @@
+
+@main
+function do_some_c_testing(){
+    c::puts("Hello world!")
+    
+    let num = 1
+    c::printf("Hey! %d\n", num)
+
+    //those two are working it seems
+}
+

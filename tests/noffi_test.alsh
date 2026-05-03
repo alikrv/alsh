@@ -1,0 +1,12 @@
+# noffi_test.alsh
+# Regression test for @noffi
+
+@stdlib
+
+@noffi
+
+function test_noffi() {
+    c::puts("this should not execute")
+    c::printf("this should also not execute\n")
+    println("noffi test passed")
+}

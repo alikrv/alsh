@@ -1,0 +1,79 @@
+function test_new_stuff() {
+    test_structs()
+    test_enums()
+    test_scan()
+    test_switch()
+}
+
+struct person {
+    age: int
+    name: str
+    height: float
+}
+
+enum bread_id {
+    brioche
+    fougasse
+    baguette
+    croissant
+}
+
+function french_function() {
+    echo "french_function"
+}
+
+function other_function() {
+    echo "other_function"
+}
+
+function snack_function() {
+    echo "snack_function"
+}
+
+function test_structs() {
+    echo "--- test structs ---"
+    let alice = person { age: 28 name: "Alice" height: 1.70 }
+    echo "name: $alice.name"
+    echo "age: $alice.age"
+    echo "height: $alice.height"
+
+    let older = person { age: ($alice.age + 5) name: $alice.name height: $alice.height }
+    echo "older.age: $older.age"
+}
+
+function test_enums() {
+    echo "--- test enums ---"
+    let loaf = bread_id.croissant
+    echo "chosen bread: $loaf"
+
+    if ($loaf == bread_id.croissant) {
+        echo "croissant match"
+    } else {
+        echo "other bread"
+    }
+}
+
+function test_scan() {
+    echo "--- test scan ---"
+    let current_bread = bread_id.fougasse
+
+    scan of bread_id {
+        brioche: french_function()
+        baguette: french_function()
+        fougasse: other_function()
+        croissant: snack_function()
+    }
+}
+
+function test_switch() {
+    echo "--- test switch ---"
+    let current_bread = bread_id.croissant
+
+    switch on current_bread {
+        brioche: french_function()
+        baguette: french_function()
+        fougasse: other_function()
+        croissant: snack_function()
+        default: other_function()
+    }
+}

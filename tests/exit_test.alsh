@@ -1,0 +1,9 @@
+# exit_test.alsh
+# Regression example for _exit(R)
+
+@justrunit
+@stdlib
+
+println("exit test start")
+_exit(2)
+println("ERROR: _exit did not terminate the script")

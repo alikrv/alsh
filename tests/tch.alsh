@@ -1,0 +1,9 @@
+#!/usr/local/bin/alsh
+
+@main
+function do_some_stuff {
+    c::puts("Hellow")
+    _bail
+    let pid = c::getpid()
+    std::println("$pid")
+}

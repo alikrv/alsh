@@ -1,0 +1,6 @@
+#!/usr/bin/env alsh
+
+@stdlib
+@justrunit
+
+println("test with @justrunit")

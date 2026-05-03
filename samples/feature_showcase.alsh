@@ -1,0 +1,310 @@
+#!/usr/bin/env alsh
+# Feature Showcase: Comprehensive ALSh Language Features
+
+@stdlib
+
+# ===== STRUCT DEFINITION =====
+struct person {
+    name: str
+    age: int
+}
+
+# ===== ENUM DEFINITION =====
+enum mood {
+    happy
+    curious
+    tired
+}
+
+# ===== HELPER FUNCTIONS =====
+function greet(name, greeting) {
+    let msg = "$greeting, $name!"
+    return msg
+}
+
+function add(a, b) {
+    return (a + b)
+}
+
+function calculate_area(width, height) {
+    let area = (width * height)
+    return area
+}
+
+function check_sign(val) {
+    if ($val < 0) {
+        return "negative"
+    }
+    if ($val == 0) {
+        return "zero"
+    }
+    return "positive"
+}
+
+# ===== GLOBAL VARIABLE =====
+!global let shared_value = "I am global"
+
+# ===== MAIN FUNCTION (ENTRY POINT) =====
+@main
+function main() {
+    println("====== ALSH Feature Showcase ======")
+    println("")
+
+    # ===== 1. VARIABLES & ASSIGNMENTS =====
+    println("1. Variables & Assignments:")
+    let name = "ALSH"
+    let version = 1
+    let pi = 3.14159
+    let is_awesome = true
+    println("  name = $name")
+    println("  version = $version")
+    println("")
+
+    # ===== 2. STRING INTERPOLATION =====
+    println("2. String Interpolation:")
+    let greeting = "Hello, $name!"
+    let version_str = "Version: $version"
+    println("  greeting = $greeting")
+    println("  version_str = $version_str")
+    println("")
+
+    # ===== 3. ARITHMETIC OPERATIONS =====
+    println("3. Arithmetic Operations:")
+    let x = 10
+    let y = 3
+    let sum = (x + y)
+    let diff = (x - y)
+    let prod = (x * y)
+    let quot = (x / y)
+    let remainder = (x % y)
+    println("  $x + $y = $sum")
+    println("  $x - $y = $diff")
+    println("  $x * $y = $prod")
+    println("  $x / $y = $quot")
+    println("  $x % $y = $remainder")
+    println("")
+
+    # ===== 4. COMPARISON OPERATORS =====
+    println("4. Comparison Operators:")
+    if ($x == 10) {
+        println("  $x == 10: true")
+    } else {
+        println("  $x == 10: false")
+    }
+    if ($x != $y) {
+        println("  $x != $y: true")
+    } else {
+        println("  $x != $y: false")
+    }
+    if ($x > $y) {
+        println("  $x > $y: true")
+    } else {
+        println("  $x > $y: false")
+    }
+    if ($x < $y) {
+        println("  $x < $y: true")
+    } else {
+        println("  $x < $y: false")
+    }
+    println("")
+
+    # ===== 5. LOGICAL OPERATORS =====
+    println("5. Logical Operators:")
+    if ($x > 5 && $y < 10) {
+        println("  ($x > 5 && $y < 10) = true")
+    } else {
+        println("  ($x > 5 && $y < 10) = false")
+    }
+    if ($x < 5 || $y > 2) {
+        println("  ($x < 5 || $y > 2) = true")
+    } else {
+        println("  ($x < 5 || $y > 2) = false")
+    }
+    println("")
+
+    # ===== 6. ARRAYS =====
+    println("6. Arrays:")
+    let fruits = [1, 2, 3]
+    let numbers = [10, 20, 30, 40, 50]
+    println("  fruits = $fruits")
+    println("  numbers = $numbers")
+    println("")
+
+    # ===== 7. ARRAY FUNCTIONS =====
+    println("7. Array Functions (stdlib):")
+    let first_elem = std::first(fruits)
+    let last_elem = std::last(numbers)
+    let array_len = std::len(fruits)
+    let reversed = std::reverse(fruits)
+    println("  first(fruits) = $first_elem")
+    println("  last(numbers) = $last_elem")
+    println("  len(fruits) = $array_len")
+    println("  reverse(fruits) = $reversed")
+    println("")
+
+    # ===== 8. STRING FUNCTIONS =====
+    println("8. String Functions (stdlib):")
+    let text = "hello world"
+    let upper_text = std::upper(text)
+    let lower_text = std::lower(text)
+    let trimmed = std::trim("  spaces  ")
+    let repeated = std::repeat("*", 5)
+    println("  upper('hello world') = $upper_text")
+    println("  lower('HELLO WORLD') = $lower_text")
+    println("  trim('  spaces  ') = $trimmed")
+    println("  repeat('*', 5) = $repeated")
+    println("")
+
+    # ===== 9. MATH FUNCTIONS =====
+    println("9. Math Functions (stdlib):")
+    let min_val = std::min(x, y)
+    let max_val = std::max(x, y)
+    let clamped = std::clamp(x, 0, 20)
+    println("  min($x, $y) = $min_val")
+    println("  max($x, $y) = $max_val")
+    println("  clamp($x, 0, 20) = $clamped")
+    println("")
+
+    # ===== 10. FUNCTION CALLS =====
+    println("10. Function Calls:")
+    let greet_result = greet("World", "Hi")
+    let add_result = add(5, 3)
+    let area_result = calculate_area(10, 5)
+    println("  greet('World', 'Hi') = $greet_result")
+    println("  add(5, 3) = $add_result")
+    println("  calculate_area(10, 5) = $area_result")
+    println("")
+
+    # ===== 11. IF / ELIF / ELSE =====
+    println("11. If/Elif/Else:")
+    if ($x > 15) {
+        println("  x is greater than 15")
+    } else if ($x > 5) {
+        println("  x is greater than 5 (actual result)")
+    } else {
+        println("  x is 5 or less")
+    }
+    println("")
+
+    # ===== 12. WHILE LOOP =====
+    println("12. While Loop:")
+    let counter = 0
+    while ($counter < 3) {
+        println("  Counter: $counter")
+        let counter = (counter + 1)
+    }
+    println("")
+
+    # ===== 13. FOREACH LOOP =====
+    println("13. Foreach Loop:")
+    foreach item in [1, 2, 3] {
+        println("  Item: $item")
+    }
+    println("")
+
+    # ===== 14. C-STYLE FOR LOOP =====
+    println("14. C-style For Loop:")
+    for (let i = 1, i < 4, let i = (i + 1)) {
+        println("  i = $i")
+    }
+    println("")
+
+    # ===== 15. BREAK & CONTINUE =====
+    println("15. Break & Continue:")
+    foreach j in [1, 2, 3, 4, 5] {
+        if ($j == 2) {
+            continue
+        }
+        if ($j == 4) {
+            break
+        }
+        println("  j = $j")
+    }
+    println("")
+
+    # ===== 16. INFINITE LOOP (with break) =====
+    println("16. Infinite Loop (limited):")
+    let count = 0
+    loop {
+        if ($count >= 2) {
+            break
+        }
+        println("  Loop tick: $count")
+        let count = (count + 1)
+    }
+    println("")
+
+    # ===== 17. COUNTED LOOP =====
+    println("17. Counted Loop:")
+    let tick = 0
+    loop count 2 {
+        println("  Tick: $tick")
+        let tick = (tick + 1)
+    }
+    println("")
+
+    # ===== 18. STRUCTS =====
+    println("18. Structs:")
+    let alice = person {
+        name: "Alice"
+        age: 30
+    }
+    println("  alice.name = $alice.name")
+    println("  alice.age = $alice.age")
+    println("")
+
+    # ===== 19. ENUMS =====
+    println("19. Enums:")
+    let current_mood = mood.happy
+    if ($current_mood == mood.happy) {
+        println("  Current mood is: happy")
+    }
+    println("")
+
+    # ===== 20. TRY / CATCH =====
+    println("20. Try/Catch:")
+    try {
+        let risky = (100 / 1)
+        println("  Operation succeeded: $risky")
+    } catch {
+        println("  Caught an error")
+    }
+    println("")
+
+    # ===== 21. STDLIB NAMESPACE =====
+    println("21. Stdlib Namespace (std::):")
+    let upper = std::upper("lowercase")
+    let len = std::len("hello")
+    let pid = std::pid()
+    println("  std::upper('lowercase') = $upper")
+    println("  std::len('hello') = $len")
+    println("  std::pid() = $pid")
+    println("")
+
+    # ===== 22. STRING COMPARISON =====
+    println("22. String Comparison:")
+    let str1 = "hello"
+    let str2 = "hello"
+    if ($str1 == $str2) {
+        println("  Strings are equal")
+    }
+    println("")
+
+    # ===== 23. RETURN STATEMENTS =====
+    println("23. Function Return Values:")
+    let sign_check = check_sign(5)
+    println("  sign(5) = $sign_check")
+    let sign_neg = check_sign(-3)
+    println("  sign(-3) = $sign_neg")
+    println("")
+
+    # ===== 24. GLOBAL VARIABLE =====
+    println("24. Global Variable:")
+    println("  shared_value = $shared_value")
+    println("")
+
+    println("====== End of Showcase ======")
+    
+    # Commented out exit:
+    # _exit(0)
+}

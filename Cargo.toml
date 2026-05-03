@@ -1,0 +1,23 @@
+[package]
+name = "alsh-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc = "0.2"
+nix = { version = "0.27", features = ["term", "signal", "process", "fs", "user"] }
+rustyline = "14.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+debug = false
+debug-assertions = false
+overflow-checks = false
+panic = "abort"
+strip = "symbols"
+
+[[bin]]
+name = "alsh"
+path = "src/main.rs"

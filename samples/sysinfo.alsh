@@ -1,0 +1,135 @@
+#!/usr/local/bin/alsh
+
+# sysinfo.alsh
+# system information display, fastfetch without the ascii art
+# uses a mix of shell execution, c:: and std::
+
+@stdlib
+
+function get_os() {
+    let name = { grep "^PRETTY_NAME" /etc/os-release }
+    let name = replace($name, "PRETTY_NAME=", "")
+    let name = replace($name, "\"", "")
+    return $name
+}
+
+function get_kernel() {
+    let k = { uname -r }
+    return $k
+}
+
+function get_hostname() {
+    let h = { uname -n }
+    return $h
+}
+
+function get_uptime() {
+    let u = { uptime -p }
+    return $u
+}
+
+function get_shell() {
+    let s = env("SHELL")
+    return $s
+}
+
+function get_cpu() {
+    let cpu = { grep -m1 "model name" /proc/cpuinfo }
+    let cpu = replace($cpu, "model name	: ", "")
+    return $cpu
+}
+
+function get_memory() {
+    let total = { grep MemTotal /proc/meminfo }
+    let available = { grep MemAvailable /proc/meminfo }
+    let total = replace($total, "MemTotal:", "")
+    let total = trim($total)
+    let available = replace($available, "MemAvailable:", "")
+    let available = trim($available)
+    let total_gb = format_gb($total)
+    let total_gib = format_gib($total)
+    let available_gb = format_gb($available)
+    let available_gib = format_gib($available)
+    println("  memory (total):     $total ($total_gb / $total_gib)")
+    println("  memory (available): $available ($available_gb / $available_gib)")
+}
+
+function get_disk() {
+    let disk = { df -h / }
+    return $disk
+}
+
+function get_cpu_cores() {
+    let cores = { nproc }
+    return $cores
+}
+
+function get_arch() {
+    let a = { uname -m }
+    return $a
+}
+
+function get_user() {
+    let u = env("USER")
+    return $u
+}
+
+function get_de() {
+    let de = env("XDG_CURRENT_DESKTOP", "unknown")
+    return $de
+}
+
+function get_term() {
+    let t = env("TERM", "unknown")
+    return $t
+}
+
+function separator() {
+    println("─────────────────────────────────")
+}
+
+@main
+function sysinfo() {
+    let user = get_user()
+    let host = get_hostname()
+
+    println("")
+    println("  $user@$host")
+    separator()
+
+    let os = get_os()
+    println("  os:       $os")
+
+    let kernel = get_kernel()
+    println("  kernel:   $kernel")
+
+    let arch = get_arch()
+    println("  arch:     $arch")
+
+    let uptime = get_uptime()
+    println("  uptime:   $uptime")
+
+    let sh = get_shell()
+    println("  shell:    $sh")
+
+    let term = get_term()
+    println("  terminal: $term")
+
+    let de = get_de()
+    println("  de/wm:    $de")
+
+    let cpu = get_cpu()
+    let cores = get_cpu_cores()
+    println("  cpu:      $cpu")
+    println("  cores:    $cores")
+
+    get_memory()
+
+    separator()
+    println("  disk usage (/):")
+    let disk = get_disk()
+    println("  $disk")
+    println("")
+
+    return 0
+}

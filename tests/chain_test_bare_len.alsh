@@ -1,0 +1,16 @@
+#!/usr/bin/env alsh
+
+@stdlib
+@main
+
+function main() {
+    echo "=== Test bare len() in chain ==="
+    
+    # Using bare len() instead of std::len()
+    let len_result = chain {
+        "hello world"
+        std::split(@, " ")
+        len()
+    }
+    println("len_result = $len_result")
+}

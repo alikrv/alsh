@@ -1,0 +1,45 @@
+#!/usr/bin/env alsh
+
+# Dataflow regression test for ALSH constructs:
+# - shell pipes (`|`)
+# - ALSH pipelines (`->`)
+# - value chains (`chain {}`)
+
+@stdlib
+
+@main
+function main() {
+    echo "=== ALSH dataflow regression test ==="
+
+    echo "--- shell pipe test ---"
+    # shell pipe semantics should route stdout through external commands
+    echo "one two three" | wc -w
+
+    echo "--- ALSH stream pipeline test ---"
+    echo "one two three" -> std::upper() # -> println
+
+    echo "--- ALSH stream pipeline with explicit binding ---"
+    echo "one two three" -> std::split(@, " ") -> std::len() -> println
+
+    echo "--- value chain implicit single-arg binding ---"
+    let words = chain {
+        "hello world"
+        std::split(@, " ")
+        len()
+    }
+    println("word count = $words")
+
+    echo "--- value chain explicit @ binding ---"
+    let found = chain {
+        "goodbye world"
+        std::contains(@, "world")
+    }
+    println("contains world = $found")
+
+    echo "--- value chain literal to function ---"
+    let trimmed = chain {
+        "   spaced out   "
+        std::trim()
+    }
+    println("trimmed = '$trimmed'")
+}

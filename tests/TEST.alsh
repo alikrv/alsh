@@ -1,0 +1,26 @@
+#!/usr/local/bin/alsh
+
+@include "tests/cstdlib_test.alsh"
+@include "tests/v1.1stuff.alsh"
+@include "tests/stdlib_test.alsh"
+@include "tests/noffi_test.alsh"
+
+@main
+function test_stuff(){
+    //run_all_cstdlib_tests()
+    //test_time()
+    //test_string()
+    //test_stdlib()
+    //test_stdio()
+    //test_math()
+    //test_file_io()
+    //test_ctype()
+
+    //test_new_stuff()
+    //test_enums()
+    //test_structs()
+    //test_scan()
+
+    run_stdlib_tests()
+    test_noffi()
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env alsh
+
+@main
+function main() {
+    echo "Hello from ALSh"
+}

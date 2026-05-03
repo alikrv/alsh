@@ -1,0 +1,8 @@
+#!/usr/bin/env alsh
+
+@stdlib
+
+@main
+function main() {
+    std::println("Hello from std::println")
+}

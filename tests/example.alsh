@@ -1,0 +1,23 @@
+#!/usr/local/bin/alsh
+
+
+@main
+function an_example(){
+
+    let myvar = "Hello, ALSH!"
+    echo $myvar
+
+    loop count 10 {
+        echo "Loop iteration"
+    }
+
+    std::println("Hello, world!")
+    c::puts("Hello from C!")
+
+
+    let message = "hey"
+    c::puts($message)
+    std::println($message)
+    echo $message
+    
+}
