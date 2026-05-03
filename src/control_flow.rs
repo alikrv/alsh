@@ -323,6 +323,8 @@ impl ControlFlowParser {
             self.parse_function()
         } else if upper.starts_with("LET ") {
             self.parse_let()
+        } else if let Some(stmt) = self.parse_assignment(&line)? {
+            Ok(Some(stmt))
         } else if upper.starts_with("@") {
             self.advance();
             Ok(None)
@@ -331,6 +333,72 @@ impl ControlFlowParser {
             self.advance();
             Ok(Some(Statement::Command(line)))
         }
+    }
+
+    fn parse_assignment(&mut self, line: &str) -> Result<Option<Statement>, String> {
+        let trimmed = line.trim();
+        if !trimmed.starts_with('$') {
+            return Ok(None);
+        }
+
+        let mut chars = trimmed.chars();
+        chars.next(); // skip $
+
+        let mut name = String::new();
+        while let Some(ch) = chars.next() {
+            if ch.is_alphanumeric() || ch == '_' || ch == '.' {
+                name.push(ch);
+            } else {
+                break;
+            }
+        }
+
+        if name.is_empty() {
+            return Ok(None);
+        }
+
+        let rest: String = chars.collect();
+        let rest = rest.trim_start();
+        if !rest.starts_with('=') {
+            return Ok(None);
+        }
+
+        let rhs = rest[1..].trim();
+        if rhs.is_empty() {
+            return Err("Assignment syntax: $var = expression".to_string());
+        }
+
+        let value = if rhs.contains('{') {
+            let mut value_text = rhs.to_string();
+            let mut brace_depth = rhs.chars().filter(|&c| c == '{').count().saturating_sub(rhs.chars().filter(|&c| c == '}').count());
+
+            while brace_depth > 0 {
+                let next_line = self.current_line().unwrap().clone();
+                let trimmed = next_line.trim();
+                self.advance();
+
+                value_text.push('\n');
+                value_text.push_str(&next_line);
+
+                if trimmed.contains('{') {
+                    brace_depth += trimmed.matches('{').count();
+                }
+                if trimmed.contains('}') {
+                    brace_depth = brace_depth.saturating_sub(trimmed.matches('}').count());
+                }
+            }
+
+            if brace_depth != 0 {
+                return Err("Expected matching }".to_string());
+            }
+
+            value_text
+        } else {
+            rhs.to_string()
+        };
+
+        self.advance();
+        Ok(Some(Statement::Let { name, value }))
     }
 
     fn parse_function(&mut self) -> Result<Option<Statement>, String> {
@@ -411,6 +479,9 @@ impl ControlFlowParser {
         }
 
         let name = parts[0].trim().to_string();
+        if name.starts_with('$') {
+            return Err("LET syntax: variable name must not start with '$'".to_string());
+        }
         if name.is_empty() {
             return Err("LET syntax: missing variable name".to_string());
         }

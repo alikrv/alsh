@@ -81,6 +81,8 @@ function start() { // notice how its not called main? well its the main function
         }
     }
 
+
+
     # --- arrays ---
     let arr = [1, 2, 3]
 
@@ -117,6 +119,7 @@ function start() { // notice how its not called main? well its the main function
     echo "summary=$summary"
 
     # --- try/catch ---
+
     try {
         let data = { curl -s API_URL }
         echo "data=$data"
@@ -130,6 +133,10 @@ function start() { // notice how its not called main? well its the main function
 
     get_data(2, API_URL)
 
+    let test_var = "test"
+    echo '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+    get_data(1, $test_var)
+
     do_some_c_testing()
 
     return 0
@@ -137,7 +144,7 @@ function start() { // notice how its not called main? well its the main function
 
 function add(a, b) {
     let result = ($a + $b)
-    return result
+    return $result
 }
 
 function get_data(interval, url) {
