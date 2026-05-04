@@ -1,7 +1,21 @@
-@justrunit
+#!/usr/bin/env alsh
 
-let i = 0
-while ($i < 10) {
-    $i = ($i + 1)   // increment
-    std::println("doing simple loop, i=$i")
+//yes, both `//` and `#` comments (interchangable)
+
+@main
+function test_a_simple_while_loop() {
+    let i = 0
+    while ($i < 10) {
+        $i = ($i + 1)   // increment
+        std::println("doing simple loop, i=$i")
+    }
+}
+
+function test_some_c_function(){
+    let i = 0
+    while ($i < 10) {
+        $i = ($i + 1)   // increment
+        // Use libc printf
+        c::printf("doing simple loop, i=%d\n", $i)
+    }
 }

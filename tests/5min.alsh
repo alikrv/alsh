@@ -1,0 +1,9 @@
+@justrunit
+
+let minute = 0
+loop interval 60 {
+    $minute = ($minute + 1)
+    if ($minute == 5) {
+        break
+    }
+}

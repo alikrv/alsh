@@ -2,5 +2,5 @@
 
 @main
 function main() {
-    println("Hello from ALSh")
+    println("Hello from ALSH")
 }
